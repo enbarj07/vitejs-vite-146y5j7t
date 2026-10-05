@@ -11,7 +11,6 @@ import { db, obtenerFolioPorId } from '../db/database';
 import type {
   BrickForm,
   EstadoRegistro,
-  Folio,
   RegistroHU,
   RegistroHUForm,
 } from '../types';
