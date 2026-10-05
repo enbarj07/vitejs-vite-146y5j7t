@@ -199,7 +199,10 @@ export default function CapturaHU() {
     setMensajeExito('');
   };
 
-  const manejarEscaneo = (codigo: string) => {
+    const manejarEscaneo = (
+    codigo: string,
+    tipoForzado?: 'entrada' | 'donante' | 'salida',
+  ) => {
     const codigoLimpio = codigo.trim();
 
     if (!codigoLimpio) {
@@ -207,7 +210,9 @@ export default function CapturaHU() {
       return;
     }
 
-    if (scannerActivo === 'entrada') {
+       const tipo = tipoForzado ?? scannerActivo;
+
+    if (tipo === 'entrada') {
       if (formulario.hora_entrada) {
         setMensajeError(
           'Esta HU ya tiene registrada la hora de entrada.',
@@ -228,7 +233,7 @@ export default function CapturaHU() {
       return;
     }
 
-    if (scannerActivo === 'donante') {
+  if (tipo === 'donante') {
       if (!formulario.hora_entrada) {
         setMensajeError(
           'Primero registra la HU afectada/destino.',
@@ -255,7 +260,7 @@ export default function CapturaHU() {
       return;
     }
 
-    if (scannerActivo === 'salida') {
+    if (tipo === 'salida') {
       if (!formulario.hora_entrada) {
         setMensajeError(
           'Primero registra la hora de entrada.',
@@ -287,7 +292,7 @@ export default function CapturaHU() {
       );
     }
   };
-  const registrarManual = () => {
+    const registrarManual = () => {
     const codigo = huManual.trim();
 
     if (!codigo) {
@@ -295,7 +300,17 @@ export default function CapturaHU() {
       return;
     }
 
-    manejarEscaneo(codigo);
+    if (!formulario.hora_entrada) {
+      manejarEscaneo(codigo, 'entrada');
+    } else if (!formulario.hora_salida) {
+      manejarEscaneo(codigo, 'salida');
+    } else {
+      setMensajeError(
+        'Esta HU ya tiene entrada y salida registradas. Guarda el registro para capturar otra.',
+      );
+      return;
+    }
+
     setHuManual('');
   };
 
