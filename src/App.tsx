@@ -8,6 +8,7 @@ import {
 import Home from './screens/Home';
 import NuevoFolio from './screens/NuevoFolio';
 import CapturaHU from './screens/CapturaHU';
+import EditarFolio from './screens/EditarFolio';
 import Historial from './screens/Historial';
 import BotonInstalar from './components/BotonInstalar';
 
@@ -30,6 +31,10 @@ export default function App() {
           element={<CapturaHU />}
         />
 
+        <Route
+          path="/editar-folio/:id"
+          element={<EditarFolio />}
+        />
         <Route
           path="/historial"
           element={<Historial />}
