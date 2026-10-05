@@ -122,7 +122,11 @@ export default function CapturaHU() {
   const [huManual, setHuManual] = useState('');
 
   useEffect(() => {
-    if (!formulario.hora_entrada || formulario.hora_salida) {
+    if (
+      !formulario.hora_entrada ||
+      formulario.hora_salida ||
+      scannerActivo !== null
+    ) {
       return;
     }
 
@@ -133,7 +137,7 @@ export default function CapturaHU() {
     return () => {
       window.clearInterval(intervalo);
     };
-  }, [formulario.hora_entrada, formulario.hora_salida]);
+  }, [formulario.hora_entrada, formulario.hora_salida, scannerActivo]);
 
   useEffect(() => {
     if (!mensajeError && !mensajeExito) {
