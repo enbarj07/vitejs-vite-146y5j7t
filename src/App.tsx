@@ -35,6 +35,7 @@ export default function App() {
           path="/editar-folio/:id"
           element={<EditarFolio />}
         />
+
         <Route
           path="/historial"
           element={<Historial />}
