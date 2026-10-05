@@ -4,11 +4,7 @@ import {
   useState,
   type CSSProperties,
 } from 'react';
-import {
-  Html5Qrcode,
-  type Html5QrcodeError,
-  type Html5QrcodeResult,
-} from 'html5-qrcode';
+import { Html5Qrcode } from 'html5-qrcode';
 
 interface ScannerProps {
   onScan: (codigo: string) => void;
@@ -61,10 +57,7 @@ export default function Scanner({
             aspectRatio: 1.777778,
             disableFlip: false,
           },
-          (
-            decodedText: string,
-            _decodedResult: Html5QrcodeResult,
-          ) => {
+                    (decodedText: string) => {
             if (
               procesandoResultadoRef.current
             ) {
@@ -88,10 +81,7 @@ export default function Scanner({
               }, 1000);
             }
           },
-          (
-            _errorMessage: string,
-            _error: Html5QrcodeError,
-          ) => {
+                    () => {
             /*
              * Los errores de lectura son normales mientras
              * la cámara está buscando un código.
