@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useNavigate } from 'react-router-dom';
-import { db } from '../db/database';
+import { db, eliminarFolioCompleto } from '../db/database';
 import type { Folio } from '../types';
 
 const styles: Record<string, React.CSSProperties> = {
@@ -78,6 +78,13 @@ const styles: Record<string, React.CSSProperties> = {
     boxShadow: '0 2px 8px rgba(15, 23, 42, 0.05)',
     textAlign: 'left',
   },
+  cardHeader: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: '10px',
+    marginBottom: '4px',
+  },
   cardButton: {
     width: '100%',
     border: 'none',
@@ -85,6 +92,20 @@ const styles: Record<string, React.CSSProperties> = {
     background: 'transparent',
     textAlign: 'left',
     color: 'inherit',
+    cursor: 'pointer',
+  },
+  deleteButton: {
+    flex: '0 0 auto',
+    width: '40px',
+    height: '40px',
+    padding: 0,
+    border: '1px solid #fecaca',
+    borderRadius: '10px',
+    background: '#fef2f2',
+    color: '#b91c1c',
+    fontSize: '18px',
+    lineHeight: 1,
+    cursor: 'pointer',
   },
   folio: {
     margin: 0,
@@ -195,6 +216,29 @@ export default function Home() {
 
   const cantidadFolios = folios?.length ?? 0;
 
+  const manejarEliminar = async (folio: Folio) => {
+    if (folio.id === undefined) {
+      return;
+    }
+
+    const confirmado = window.confirm(
+      `¿Eliminar el folio ${folio.folio}?\n\n` +
+        `Se borrarán todos sus registros de HU.\n` +
+        `Esta acción no se puede deshacer.`,
+    );
+
+    if (!confirmado) {
+      return;
+    }
+
+    try {
+      await eliminarFolioCompleto(folio.id);
+    } catch (error) {
+      console.error('Error al eliminar folio:', error);
+      window.alert('No fue posible eliminar el folio.');
+    }
+  };
+
   return (
     <main style={styles.page}>
       <div style={styles.container}>
@@ -202,7 +246,7 @@ export default function Home() {
           <h1 style={styles.title}>Trazabilidad HU</h1>
 
           <p style={styles.subtitle}>
-            Bill Pack · REG-INO-013 · Control de Tarimas y HU en Proceso
+            Bill Pack · Control de Tarimas y HU en Proceso
           </p>
 
           <div style={styles.actions}>
@@ -269,6 +313,22 @@ export default function Home() {
                     key={folio.id}
                     style={styles.card}
                   >
+                    <div style={styles.cardHeader}>
+                      <h3 style={styles.folio}>
+                        {folio.folio}
+                      </h3>
+
+                      <button
+                        type="button"
+                        style={styles.deleteButton}
+                        onClick={() => manejarEliminar(folio)}
+                        aria-label={`Eliminar folio ${folio.folio}`}
+                        title="Eliminar folio"
+                      >
+                        🗑️
+                      </button>
+                    </div>
+
                     <button
                       type="button"
                       style={styles.cardButton}
@@ -278,10 +338,6 @@ export default function Home() {
                         }
                       }}
                     >
-                      <h3 style={styles.folio}>
-                        {folio.folio}
-                      </h3>
-
                       <div style={styles.infoGrid}>
                         <div style={styles.infoItem}>
                           <span style={styles.label}>Fecha</span>
