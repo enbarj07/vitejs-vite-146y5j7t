@@ -117,7 +117,9 @@ export default function CapturaHU() {
 
   const [guardando, setGuardando] = useState(false);
 
-  const [mostrarBricks, setMostrarBricks] = useState(false);
+   const [mostrarBricks, setMostrarBricks] = useState(false);
+
+  const [huManual, setHuManual] = useState('');
 
   useEffect(() => {
     if (!formulario.hora_entrada || formulario.hora_salida) {
@@ -284,6 +286,17 @@ export default function CapturaHU() {
         `Salida registrada. Tiempo en proceso: ${formatearDuracion(duracion)}.`,
       );
     }
+  };
+  const registrarManual = () => {
+    const codigo = huManual.trim();
+
+    if (!codigo) {
+      setMensajeError('Escribe el número de HU antes de registrar.');
+      return;
+    }
+
+    manejarEscaneo(codigo);
+    setHuManual('');
   };
 
   const agregarBrick = () => {
@@ -574,7 +587,7 @@ export default function CapturaHU() {
       <div style={styles.header}>
         <div>
           <div style={styles.documentLabel}>
-            REG-INO-013 · Trazabilidad HU
+            Trazabilidad HU
           </div>
 
           <h1 style={styles.title}>
@@ -749,6 +762,34 @@ export default function CapturaHU() {
               >
                 Escanear salida
               </button>
+            </div>
+                        <div style={styles.manualSection}>
+              <span style={styles.smallLabel}>
+                O ingresa la HU manualmente
+              </span>
+
+              <div style={styles.inlineField}>
+                <input
+                  type="text"
+                  value={huManual}
+                  onChange={(e) => setHuManual(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      registrarManual();
+                    }
+                  }}
+                  placeholder="Ej. HU-001234"
+                />
+
+                <button
+                  type="button"
+                  style={styles.secondaryButton}
+                  onClick={registrarManual}
+                >
+                  Registrar
+                </button>
+              </div>
             </div>
           </div>
 
@@ -1362,7 +1403,7 @@ export default function CapturaHU() {
 
       <div style={styles.footerInfo}>
         <span>
-          Bill Pack · REG-INO-013 · Versión 01
+          Bill Pack · Versión 01
         </span>
 
         <span>
@@ -1689,6 +1730,14 @@ const styles: Record<string, CSSProperties> = {
     borderRadius: '9px',
     background: '#f8fafc',
     border: '1px solid #e2e8f0',
+  },
+
+            manualSection: {
+    marginTop: '14px',
+    padding: '12px',
+    border: '1px dashed #cbd5e1',
+    borderRadius: '9px',
+    background: '#f8fafc',
   },
 
   brickHeader: {
