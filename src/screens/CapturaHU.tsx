@@ -1627,8 +1627,7 @@ const styles: Record<string, CSSProperties> = {
 
   captureGrid: {
     display: 'grid',
-    gridTemplateColumns:
-      'minmax(0, 1.7fr) minmax(220px, 0.8fr)',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
     gap: '14px',
   },
 
@@ -1647,7 +1646,7 @@ const styles: Record<string, CSSProperties> = {
     color: '#0f172a',
     fontSize: '24px',
     fontWeight: 800,
-    wordBreak: 'break-all',
+    wordBreak: 'break-word',
   },
 
   scanButtonRow: {
