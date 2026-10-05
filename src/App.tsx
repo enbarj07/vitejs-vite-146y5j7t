@@ -10,6 +10,7 @@ import NuevoFolio from './screens/NuevoFolio';
 import CapturaHU from './screens/CapturaHU';
 import Historial from './screens/Historial';
 import BotonInstalar from './components/BotonInstalar';
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -43,7 +44,7 @@ export default function App() {
             />
           }
         />
-           </Routes>
+      </Routes>
 
       <BotonInstalar />
     </BrowserRouter>
