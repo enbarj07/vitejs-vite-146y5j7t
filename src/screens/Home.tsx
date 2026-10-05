@@ -94,6 +94,20 @@ const styles: Record<string, React.CSSProperties> = {
     color: 'inherit',
     cursor: 'pointer',
   },
+    editButton: {
+    flex: '0 0 auto',
+    width: '40px',
+    height: '40px',
+    padding: 0,
+    border: '1px solid #bfdbfe',
+    borderRadius: '10px',
+    background: '#eff6ff',
+    color: '#1e40af',
+    fontSize: '18px',
+    lineHeight: 1,
+    cursor: 'pointer',
+    marginRight: '6px',
+  },
   deleteButton: {
     flex: '0 0 auto',
     width: '40px',
@@ -317,6 +331,17 @@ export default function Home() {
                       <h3 style={styles.folio}>
                         {folio.folio}
                       </h3>
+                                            <button
+                        type="button"
+                        style={styles.editButton}
+                        onClick={() =>
+                          navigate(`/editar-folio/${folio.id}`)
+                        }
+                        aria-label={`Editar folio ${folio.folio}`}
+                        title="Editar folio"
+                      >
+                        ✏️
+                      </button>
 
                       <button
                         type="button"
